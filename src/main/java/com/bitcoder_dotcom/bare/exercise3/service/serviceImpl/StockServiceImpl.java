@@ -8,6 +8,8 @@ import com.bitcoder_dotcom.bare.exercise3.repository.StockRepository;
 import com.bitcoder_dotcom.bare.exercise3.service.StockService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +76,22 @@ public class StockServiceImpl implements StockService {
                 stockResponse
         );
         log.info("Stock price updated successfully with id: {}", stockId);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<Page<StockDto.Response>>> getListOfStocks(Pageable pageable) {
+        log.info("Fetching all stocks");
+        Page<Stock> stocks = stockRepository.findAll(pageable);
+        Page<StockDto.Response> stockResponses = stocks.map(this::convertEntityToDto);
+        ApiResponse<Page<StockDto.Response>> apiResponse = new ApiResponse<>(
+                LocalDateTime.now(),
+                UUID.randomUUID().toString(),
+                true,
+                "All stocks fetched successfully",
+                stockResponses
+        );
+        log.info("All stocks fetched successfully");
         return ResponseEntity.ok(apiResponse);
     }
 

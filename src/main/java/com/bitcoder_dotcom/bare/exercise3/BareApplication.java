@@ -1,11 +1,17 @@
 package com.bitcoder_dotcom.bare.exercise3;
 
+import com.bitcoder_dotcom.bare.exercise3.dto.StockDto;
 import com.bitcoder_dotcom.bare.exercise3.model.Stock;
 import com.bitcoder_dotcom.bare.exercise3.repository.StockRepository;
+import com.bitcoder_dotcom.bare.exercise3.service.StockService;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import javax.xml.crypto.Data;
@@ -21,7 +27,7 @@ public class BareApplication {
     }
 
     @Component
-    public class DataLoader implements CommandLineRunner {
+    public static class DataLoader implements CommandLineRunner {
 
         private final StockRepository stockRepository;
 
@@ -42,6 +48,25 @@ public class BareApplication {
             );
 
             this.stockRepository.saveAll(stocks);
+        }
+    }
+
+    @Route
+    public static class MainView extends VerticalLayout {
+
+        private final StockService stockService;
+
+        private Grid<StockDto.Response> grid;
+
+        public MainView(StockService stockService) {
+            this.stockService = stockService;
+            this.grid = new Grid<>(StockDto.Response.class);
+            add(grid);
+            listStocks();
+        }
+
+        private void listStocks() {
+            grid.setItems(stockService.getListOfStocks(PageRequest.of(0, 10)).getBody().getData().getContent());
         }
     }
 }
