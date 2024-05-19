@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import javax.xml.crypto.Data;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,34 +39,15 @@ public class BareApplication {
         @Override
         public void run(String... args) throws Exception {
             List<Stock> stocks = Arrays.asList(
-                    new Stock(null, "Flakes", 200.00, LocalDate.now(), LocalDate.now()),
-                    new Stock(null, "Oats", 2000.00, LocalDate.now(), LocalDate.now()),
-                    new Stock(null, "Bailey", 350.00, LocalDate.now(), LocalDate.now()),
-                    new Stock(null, "Corn", 2300.00, LocalDate.now(), LocalDate.now()),
-                    new Stock(null, "Beans", 200.00, LocalDate.now(), LocalDate.now()),
-                    new Stock(null, "Meat", 400.00, LocalDate.now(), LocalDate.now())
+                    new Stock(null, "Flakes", 200.00, LocalDateTime.now(), LocalDateTime.now()),
+                    new Stock(null, "Oats", 2000.00, LocalDateTime.now(), LocalDateTime.now()),
+                    new Stock(null, "Bailey", 350.00, LocalDateTime.now(), LocalDateTime.now()),
+                    new Stock(null, "Corn", 2300.00, LocalDateTime.now(), LocalDateTime.now()),
+                    new Stock(null, "Beans", 200.00, LocalDateTime.now(), LocalDateTime.now()),
+                    new Stock(null, "Meat", 400.00, LocalDateTime.now(), LocalDateTime.now())
             );
 
             this.stockRepository.saveAll(stocks);
-        }
-    }
-
-    @Route
-    public static class MainView extends VerticalLayout {
-
-        private final StockService stockService;
-
-        private Grid<StockDto.Response> grid;
-
-        public MainView(StockService stockService) {
-            this.stockService = stockService;
-            this.grid = new Grid<>(StockDto.Response.class);
-            add(grid);
-            listStocks();
-        }
-
-        private void listStocks() {
-            grid.setItems(stockService.getListOfStocks(PageRequest.of(0, 10)).getBody().getData().getContent());
         }
     }
 }

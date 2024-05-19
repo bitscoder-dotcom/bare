@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "stocks")
@@ -24,9 +25,9 @@ public class Stock {
     private String name;
     private double currentPrice;
     @CreationTimestamp
-    private LocalDate createDate;
+    private LocalDateTime createDate;
     @UpdateTimestamp
-    private LocalDate lastUpdate;
+    private LocalDateTime lastUpdate;
 }
 
 

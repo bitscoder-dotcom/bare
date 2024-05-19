@@ -112,8 +112,8 @@ public class StockServiceImpl implements StockService {
         response.setId(stock.getId());
         response.setName(stock.getName());
         response.setCurrentPrice(stock.getCurrentPrice());
-        response.setCreateDate(LocalDate.now());
-        response.setLastUpdate(LocalDate.now());
+        response.setCreateDate(LocalDateTime.now());
+        response.setLastUpdate(LocalDateTime.now());
 
         return response;
     }
